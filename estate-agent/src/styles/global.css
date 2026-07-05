@@ -1,0 +1,71 @@
+/* =========================================
+   PrimeNest Estate Agents — Global Styles
+   Responsive: desktop + < iPad landscape (1024px)
+   ========================================= */
+
+/* ---- CSS Custom Properties ---- */
+:root {
+  --color-primary: #1a3c5e;       /* deep navy */
+  --color-accent: #c9a84c;        /* warm gold */
+  --color-accent-light: #e8d48a;
+  --color-bg: #f8f7f4;            /* warm off-white */
+  --color-surface: #ffffff;
+  --color-text: #2c2c2c;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e1d8;
+  --color-success: #2d7a4f;
+  --color-danger: #c0392b;
+
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+
+  --container-max: 1280px;
+  --gap: 24px;
+}
+
+/* ---- Header ---- */
+.header {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: var(--shadow-md);
+  position: sticky; top: 0; z-index: 1000;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px var(--gap);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+.header-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-heading);
+  font-size: 1.5rem; font-weight: 700; color: white;
+}
+.logo-icon { color: var(--color-accent); font-size: 1.8rem; }
+.header-tagline { font-size: 0.75rem; color: rgba(255,255,255,0.65); margin-top: 1px; }
+.header-nav a {
+  color: rgba(255,255,255,0.85); margin-left: 20px;
+  font-size: 0.9rem; font-weight: 500; transition: color 0.2s;
+}
+.header-nav a:hover { color: var(--color-accent); }
+
+/* ---- Footer ---- */
+.footer {
+  background: var(--color-primary);
+  color: rgba(255,255,255,0.7);
+  padding: 32px var(--gap);
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: auto;
+}
+.footer strong { color: var(--color-accent); }
