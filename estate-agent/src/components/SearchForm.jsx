@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DropdownList, NumberPicker, DatePicker } from 'react-widgets';
+import { DropdownList, NumberPicker } from 'react-widgets';
 import 'react-widgets/styles.css';
 
 const PROPERTY_TYPES = ['Any', 'House', 'Flat'];
@@ -27,7 +27,7 @@ const MAX_PRICE_OPTIONS = [
 ];
 
 /**
- * SearchForm — uses React Widgets for all form elements.
+ * SearchForm — uses React Widgets for dropdowns/numbers, and robust native inputs for dates.
  * @param {{ onSearch: Function }} props
  */
 export default function SearchForm({ onSearch }) {
@@ -36,19 +36,19 @@ export default function SearchForm({ onSearch }) {
   const [maxPrice, setMaxPrice] = useState(MAX_PRICE_OPTIONS[0]);
   const [minBedrooms, setMinBedrooms] = useState(null);
   const [maxBedrooms, setMaxBedrooms] = useState(null);
-  const [dateFrom, setDateFrom] = useState(null);
-  const [dateTo, setDateTo] = useState(null);
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [postcode, setPostcode] = useState('');
 
   const handleSearch = () => {
     onSearch({
       type,
-      minPrice: minPrice.value,
-      maxPrice: maxPrice.value,
-      minBedrooms,
-      maxBedrooms,
-      dateFrom: dateFrom ? dateFrom.toISOString() : null,
-      dateTo: dateTo ? dateTo.toISOString() : null,
+      minPrice: minPrice?.value ?? '',
+      maxPrice: maxPrice?.value ?? '',
+      minBedrooms: minBedrooms ?? '',
+      maxBedrooms: maxBedrooms ?? '',
+      dateFrom: dateFrom || null,
+      dateTo: dateTo || null,
       postcode,
     });
   };
@@ -59,8 +59,8 @@ export default function SearchForm({ onSearch }) {
     setMaxPrice(MAX_PRICE_OPTIONS[0]);
     setMinBedrooms(null);
     setMaxBedrooms(null);
-    setDateFrom(null);
-    setDateTo(null);
+    setDateFrom('');
+    setDateTo('');
     setPostcode('');
     onSearch({});
   };
@@ -121,24 +121,37 @@ export default function SearchForm({ onSearch }) {
           </div>
         </div>
 
-        {/* Date Added */}
+        {/* Date Added (From) */}
         <div className="form-group">
           <label className="form-label">Date Added (from)</label>
-          <DatePicker
+          <input
+            type="date"
+            className="rw-input"
             value={dateFrom}
-            onChange={setDateFrom}
-            placeholder="From date"
             max={dateTo || undefined}
+            onChange={(e) => setDateFrom(e.target.value)}
+            style={{
+              width: '100%', padding: '6px 12px', border: '1px solid var(--color-border)',
+              borderRadius: 'var(--radius-sm)', fontFamily: 'var(--font-body)',
+              fontSize: '0.95rem', height: '38px', backgroundColor: '#fff'
+            }}
           />
         </div>
 
+        {/* Date Added (To) */}
         <div className="form-group">
           <label className="form-label">Date Added (to)</label>
-          <DatePicker
+          <input
+            type="date"
+            className="rw-input"
             value={dateTo}
-            onChange={setDateTo}
-            placeholder="To date"
             min={dateFrom || undefined}
+            onChange={(e) => setDateTo(e.target.value)}
+            style={{
+              width: '100%', padding: '6px 12px', border: '1px solid var(--color-border)',
+              borderRadius: 'var(--radius-sm)', fontFamily: 'var(--font-body)',
+              fontSize: '0.95rem', height: '38px', backgroundColor: '#fff'
+            }}
           />
         </div>
       </div>
@@ -146,28 +159,27 @@ export default function SearchForm({ onSearch }) {
       <div className="search-panel-row">
         {/* Postcode */}
         <div className="form-group">
-          <label className="form-label">Postcode Area</label>
+          <label className="form-label">Postcode Area / Location</label>
           <input
             type="text"
             className="rw-input"
             value={postcode}
             onChange={(e) => setPostcode(e.target.value.toUpperCase())}
-            placeholder="e.g. 00300, 10280, 80500"
+            placeholder="e.g. COLOMBO, KANDY, 00300"
             style={{
               width: '100%', padding: '8px 12px', border: '1px solid var(--color-border)',
               borderRadius: 'var(--radius-sm)', fontFamily: 'var(--font-body)',
               fontSize: '0.95rem',
             }}
-            maxLength={6}
           />
         </div>
 
         <div className="search-btn-row">
           <button className="btn btn-primary" onClick={handleSearch}>
-             Search
+            Search
           </button>
           <button className="btn btn-outline" onClick={handleReset}>
-             Reset
+            Reset
           </button>
         </div>
       </div>
