@@ -474,3 +474,122 @@
 .property-actions { display: flex; flex-direction: column; gap: 10px; }
 .property-actions .btn { width: 100%; }
 .fav-active-btn { background: #c0392b !important; color: white !important; }
+
+
+/* ---- Search Page Layout ---- */
+.search-page {
+  padding: 0;
+}
+.search-page-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+  align-items: start;
+  position: relative;
+  padding: 32px 20px;
+}
+.search-sidebar {
+  position: sticky;
+  top: 90px;
+  align-self: start;
+}
+.search-main { padding: 0; }
+.search-main .results-header { margin-bottom: 24px; }
+
+/* ---- Search Form Panel (Floating Card) ---- */
+.search-panel {
+  position: sticky;
+  top: 62px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: var(--color-surface);
+  border-radius: 0;
+  padding: 20px var(--gap);
+  box-shadow: var(--shadow-md);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 999;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.search-panel h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0;
+  margin-top: 0;
+  display: none;
+  color: var(--color-primary);
+}
+
+.search-panel-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.form-group { 
+  margin-bottom: 0; 
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+}
+.form-label {
+  display: block;
+  font-size: 0.65rem; font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.form-row { display: flex; gap: 6px; }
+
+/* react-widgets overrides */
+.rw-widget-container { border-radius: var(--radius-sm) !important; border-color: var(--color-border) !important; }
+.rw-widget-picker { border-radius: var(--radius-sm) !important; }
+.rw-state-focus .rw-widget-container { border-color: var(--color-accent) !important; box-shadow: 0 0 0 3px rgba(201,168,76,0.2) !important; }
+.rw-input { font-family: var(--font-body) !important; color: var(--color-text) !important; }
+
+/* react-widgets date picker */
+.rw-date-picker input { font-family: var(--font-body) !important; }
+
+/* Search form specific widget styles */
+.search-panel .rw-widget-container,
+.search-panel .rw-input,
+.search-panel input {
+  height: 32px;
+  font-size: 0.85rem;
+  padding: 6px 8px !important;
+  border-radius: var(--radius-sm) !important;
+}
+.search-panel .rw-widget { 
+  height: 32px;
+}
+.search-panel .form-group .rw-widget-container {
+  min-width: 110px;
+}
+.search-panel .form-row .rw-widget-container,
+.search-panel .form-row input {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+}
+
+.search-btn-row { display: flex; gap: 8px; margin-top: 0; flex: 0 0 auto; align-items: flex-end; }
+.search-btn-row .btn { flex: 1; padding: 10px 16px; font-size: 0.9rem; height: auto; }
+
+/* ---- Results ---- */
+.results-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.results-count { font-size: 0.9rem; color: var(--color-text-muted); }
+.results-count strong { color: var(--color-primary); }
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+}
