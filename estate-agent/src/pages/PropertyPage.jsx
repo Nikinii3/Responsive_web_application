@@ -3,17 +3,13 @@ import { useParams, Link } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import ImageGallery from 'react-image-gallery';
-import 'react-image-gallery/styles/css/image-gallery.css';
+import "react-image-gallery/build/image-gallery.css";
 import { useFavourites } from '../context/FavouritesContext.jsx';
 import { formatPrice } from '../utils/searchUtils.js';
 import propertiesData from '../data/properties.json';
 
 /**
- * PropertyPage — this shows full property details with those sub parts:
- * - Image gallery (6-8 photos)
- * - React Tabs (description, floor plan, Google map)
- * - Favourite button & drag hint
- * - Responsive sidebar with key details
+ * PropertyPage — full property view displaying standard layout details.
  */
 export default function PropertyPage() {
   const { id } = useParams();
@@ -31,18 +27,18 @@ export default function PropertyPage() {
 
   const fav = isFavourite(property.id);
 
-  // Build image-gallery items
-  const galleryItems = property.images.map((src) => ({
+  // Build image-gallery array cleanly
+  const galleryItems = property.images ? property.images.map((src) => ({
     original: src,
-    thumbnail: src.replace('w=800', 'w=120'),
+    thumbnail: src,
     originalAlt: `${property.type} in ${property.location}`,
     thumbnailAlt: `Thumbnail`,
-  }));
+  })) : [];
 
-  const safeDesc = property.description.replace(/<[^>]+>/g, '');
+  const safeDesc = property.description ? property.description.replace(/<[^>]+>/g, '') : '';
 
-  // Google Maps embed URL
-  const mapUrl = `https://www.google.com/maps?q=${property.lat},${property.lng}&z=15&output=embed`;
+  // Valid, open-source Google Maps iframe embed template literal syntax string
+  const mapUrl = `https://maps.google.com/maps?q=${property.lat},${property.lng}&z=15&output=embed`;
 
   return (
     <div className="property-page">
@@ -50,19 +46,23 @@ export default function PropertyPage() {
         <Link to="/" className="property-page-back">← Back to search results</Link>
 
         <div className="property-page-layout">
-          {/* Left: gallery + tabs */}
+          {/* Left panel: Media galleries and responsive layout tabs */}
           <div>
             <div className="gallery-section">
-              <ImageGallery
-                items={galleryItems}
-                showPlayButton={false}
-                showFullscreenButton={true}
-                thumbnailPosition="bottom"
-                lazyLoad={true}
-              />
+              {galleryItems.length > 0 ? (
+                <ImageGallery
+                  items={galleryItems}
+                  showPlayButton={false}
+                  showFullscreenButton={true}
+                  thumbnailPosition="bottom"
+                  lazyLoad={true}
+                />
+              ) : (
+                <div className="empty-state">No images available</div>
+              )}
             </div>
 
-            <div className="property-tabs-section">
+            <div className="property-tabs-section" style={{ marginTop: '30px' }}>
               <Tabs>
                 <TabList>
                   <Tab>📄 Description</Tab>
@@ -72,8 +72,8 @@ export default function PropertyPage() {
 
                 {/* Tab 1: Description */}
                 <TabPanel>
-                  <div className="tab-description">
-                    <p>{safeDesc}</p>
+                  <div className="tab-description" style={{ padding: '20px 0' }}>
+                    <p style={{ lineHeight: '1.6' }}>{safeDesc}</p>
                     <div style={{ marginTop: 24, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
                       <div className="property-detail-item">
                         <div className="property-detail-label">Property Type</div>
@@ -90,7 +90,7 @@ export default function PropertyPage() {
                       <div className="property-detail-item">
                         <div className="property-detail-label">Added</div>
                         <div className="property-detail-value">
-                          {property.added.day} {property.added.month} {property.added.year}
+                          {property.added?.day} {property.added?.month} {property.added?.year}
                         </div>
                       </div>
                     </div>
@@ -99,27 +99,31 @@ export default function PropertyPage() {
 
                 {/* Tab 2: Floor Plan */}
                 <TabPanel>
-                  <div className="tab-floorplan">
-                    <img
-                      src={property.floorplan}
-                      alt="Floor plan"
-                      style={{ width: '100%', maxHeight: 500, objectFit: 'contain' }}
-                    />
+                  <div className="tab-floorplan" style={{ padding: '20px 0' }}>
+                    {property.floorplan ? (
+                      <img
+                        src={property.floorplan}
+                        alt="Floor plan"
+                        style={{ width: '100%', maxHeight: 500, objectFit: 'contain', display: 'block' }}
+                      />
+                    ) : (
+                      <p>No floor plan available</p>
+                    )}
                     <p style={{ marginTop: 10, fontSize: '0.82rem', color: 'var(--color-text-muted)' }}>
                       Floor plan is indicative and may not be to scale.
                     </p>
                   </div>
                 </TabPanel>
 
-                {/* Tab 3: Map */}
+                {/* Tab 3: Location Map */}
                 <TabPanel>
-                  <div className="tab-map">
+                  <div className="tab-map" style={{ padding: '20px 0' }}>
                     <iframe
                       title={`Map of ${property.location}`}
                       src={mapUrl}
                       width="100%"
                       height="420"
-                      style={{ border: 0 }}
+                      style={{ border: 0, borderRadius: '8px' }}
                       allowFullScreen=""
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
@@ -133,7 +137,7 @@ export default function PropertyPage() {
             </div>
           </div>
 
-          {/* Right: key info sidebar */}
+          {/* Right panel: Information sidebar widgets */}
           <aside className="property-sidebar">
             <div className="property-info-card">
               <div className="property-info-header">
@@ -159,18 +163,18 @@ export default function PropertyPage() {
                   </div>
                   <div className="property-detail-item">
                     <div className="property-detail-label">Listed</div>
-                    <div className="property-detail-value">{property.added.month} {property.added.year}</div>
+                    <div className="property-detail-value">{property.added?.month} {property.added?.year}</div>
                   </div>
                 </div>
 
-                <div className="property-actions">
+                <div className="property-actions" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
                   <button
                     className={`btn ${fav ? 'fav-active-btn' : 'btn-primary'}`}
                     onClick={() => fav ? removeFavourite(property.id) : addFavourite(property)}
                   >
                     {fav ? '❤️ Remove from Favourites' : '🤍 Add to Favourites'}
                   </button>
-                  <Link to="/" className="btn btn-outline">
+                  <Link to="/" className="btn btn-outline" style={{ textAlign: 'center' }}>
                     ← Back to Results
                   </Link>
                 </div>
