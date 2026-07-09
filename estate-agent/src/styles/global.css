@@ -228,8 +228,6 @@
 }
 .property-card-added { font-size: 0.75rem; color: var(--color-text-muted); }
 
-/* ---- Favourites Panel ---- */\n.search-main .favourites-panel {\n  background: var(--color-surface);\n  border-radius: var(--radius-md);\n  padding: 20px;\n  box-shadow: var(--shadow-md);\n  border: 1px solid var(--color-border);\n  margin-top: var(--gap);\n}\n.favourites-panel {\n  background: var(--color-surface);\n  border-radius: var(--radius-md);\n  padding: 20px;\n  box-shadow: var(--shadow-md);\n  border: 1px solid var(--color-border);\n  margin-top: var(--gap);\n}\n.favourites-header {\n  display: flex; align-items: center; justify-content: space-between;\n  margin-bottom: 14px;\n}\n.favourites-header h3 { font-size: 1rem; display: flex; align-items: center; gap: 6px; }
-
 .drop-zone {
   min-height: 80px; border-radius: var(--radius-sm);
   border: 2px dashed var(--color-border);
@@ -356,3 +354,33 @@
 .property-actions { display: flex; flex-direction: column; gap: 10px; }
 .property-actions .btn { width: 100%; }
 .fav-active-btn { background: #c0392b !important; color: white !important; }
+
+/* ---- Favourites Panel ---- */
+.search-main .favourites-panel {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  margin-top: var(--gap);
+}
+.favourites-panel {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  margin-top: var(--gap);
+}
+.favourites-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.favourites-header h3 {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
