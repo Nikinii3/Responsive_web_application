@@ -42,27 +42,35 @@ export default function PropertyPage() {
 
   return (
     <div className="property-page">
+      {/* Header with Back Link */}
+      <div className="property-page-header">
+        <div className="container">
+          <Link to="/" className="property-page-back">← Back to search results</Link>
+        </div>
+      </div>
+
+      {/* Main Content */}
       <div className="container">
-        <Link to="/" className="property-page-back">← Back to search results</Link>
-
         <div className="property-page-layout">
-          {/* Left panel: Media galleries and responsive layout tabs */}
-          <div>
-            <div className="gallery-section" style={{ maxWidth: '650px', margin: '0 auto', borderRadius: '8px', overflow: 'hidden' }}>
-            {galleryItems.length > 0 ? (
-              <ImageGallery
-                items={galleryItems}
-                showPlayButton={false}
-                showFullscreenButton={true}
-                thumbnailPosition="bottom"
-                lazyLoad={true}
-              />
-            ) : (
-              <div className="empty-state">No images available</div>
-            )}
-          </div>
+          {/* Left: Gallery & Tabs */}
+          <div className="property-main">
+            {/* Gallery Section */}
+            <div className="gallery-section">
+              {galleryItems.length > 0 ? (
+                <ImageGallery
+                  items={galleryItems}
+                  showPlayButton={false}
+                  showFullscreenButton={true}
+                  thumbnailPosition="bottom"
+                  lazyLoad={true}
+                />
+              ) : (
+                <div className="empty-state">No images available</div>
+              )}
+            </div>
 
-            <div className="property-tabs-section" style={{ marginTop: '30px' }}>
+            {/* Tabs Section */}
+            <div className="property-tabs-section">
               <Tabs>
                 <TabList>
                   <Tab>📄 Description</Tab>
@@ -72,9 +80,9 @@ export default function PropertyPage() {
 
                 {/* Tab 1: Description */}
                 <TabPanel>
-                  <div className="tab-description" style={{ padding: '20px 0' }}>
-                    <p style={{ lineHeight: '1.6' }}>{safeDesc}</p>
-                    <div style={{ marginTop: 24, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                  <div className="tab-description">
+                    <p>{safeDesc}</p>
+                    <div className="property-details-grid">
                       <div className="property-detail-item">
                         <div className="property-detail-label">Property Type</div>
                         <div className="property-detail-value">{property.type}</div>
@@ -99,25 +107,22 @@ export default function PropertyPage() {
 
                 {/* Tab 2: Floor Plan */}
                 <TabPanel>
-                  <div className="tab-floorplan" style={{ padding: '20px 0' }}>
+                  <div className="tab-floorplan">
                     {property.floorplan ? (
                       <img
                         src={property.floorplan}
                         alt="Floor plan"
-                        style={{ width: '100%', maxHeight: 500, objectFit: 'contain', display: 'block' }}
                       />
                     ) : (
                       <p>No floor plan available</p>
                     )}
-                    <p style={{ marginTop: 10, fontSize: '0.82rem', color: 'var(--color-text-muted)' }}>
-                      Floor plan is indicative and may not be to scale.
-                    </p>
+                    <p className="disclaimer">Floor plan is indicative and may not be to scale.</p>
                   </div>
                 </TabPanel>
 
                 {/* Tab 3: Location Map */}
                 <TabPanel>
-                  <div className="tab-map" style={{ padding: '20px 0' }}>
+                  <div className="tab-map">
                     <iframe
                       title={`Map of ${property.location}`}
                       src={mapUrl}
@@ -128,56 +133,59 @@ export default function PropertyPage() {
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
                     />
-                    <p style={{ marginTop: 8, fontSize: '0.82rem', color: 'var(--color-text-muted)' }}>
-                       {property.location}
-                    </p>
+                    <p className="disclaimer">{property.location}</p>
                   </div>
                 </TabPanel>
               </Tabs>
             </div>
           </div>
 
-          {/* Right panel: Information sidebar widgets */}
+          {/* Right: Sidebar Info Card */}
           <aside className="property-sidebar">
-            <div className="property-info-card">
-              <div className="property-info-header">
-                <div className="property-info-price">{formatPrice(property.price)}</div>
-                <div className="property-info-title">
-                  {property.bedrooms} bedroom {property.type}
-                </div>
-                <div className="property-info-location"> {property.location}</div>
-              </div>
-              <div className="property-info-body">
-                <div className="property-detail-grid">
-                  <div className="property-detail-item">
-                    <div className="property-detail-label">Type</div>
-                    <div className="property-detail-value">{property.type}</div>
-                  </div>
-                  <div className="property-detail-item">
-                    <div className="property-detail-label">Bedrooms</div>
-                    <div className="property-detail-value">{property.bedrooms} 🛏</div>
-                  </div>
-                  <div className="property-detail-item">
-                    <div className="property-detail-label">Tenure</div>
-                    <div className="property-detail-value">{property.tenure}</div>
-                  </div>
-                  <div className="property-detail-item">
-                    <div className="property-detail-label">Listed</div>
-                    <div className="property-detail-value">{property.added?.month} {property.added?.year}</div>
-                  </div>
-                </div>
+            <div className="property-card-main">
+              {/* Type Badge */}
+              <div className="property-badge">{property.type.toUpperCase()}</div>
 
-                <div className="property-actions" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
-                  <button
-                    className={`btn ${fav ? 'fav-active-btn' : 'btn-primary'}`}
-                    onClick={() => fav ? removeFavourite(property.id) : addFavourite(property)}
-                  >
-                    {fav ? '❤️ Remove from Favourites' : '🤍 Add to Favourites'}
-                  </button>
-                  <Link to="/" className="btn btn-outline" style={{ textAlign: 'center' }}>
-                    ← Back to Results
-                  </Link>
+              {/* Price */}
+              <div className="property-price-main">{formatPrice(property.price)}</div>
+
+              {/* Title & Location */}
+              <div className="property-card-header">
+                <h1 className="property-title">{property.bedrooms} bedroom {property.type}</h1>
+                <p className="property-location">{property.location}</p>
+              </div>
+
+              {/* Details Grid */}
+              <div className="property-details-sidebar">
+                <div className="detail-row">
+                  <span className="detail-label">TYPE</span>
+                  <span className="detail-value">{property.type}</span>
                 </div>
+                <div className="detail-row">
+                  <span className="detail-label">BEDROOMS</span>
+                  <span className="detail-value">{property.bedrooms} 🛏</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">TENURE</span>
+                  <span className="detail-value">{property.tenure}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">LISTED</span>
+                  <span className="detail-value">{property.added?.month} {property.added?.year}</span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="property-actions-main">
+                <button
+                  className={`btn btn-action ${fav ? 'fav-active' : 'btn-primary'}`}
+                  onClick={() => fav ? removeFavourite(property.id) : addFavourite(property)}
+                >
+                  {fav ? '❤️ Remove from Favourites' : '🤍 Add to Favourites'}
+                </button>
+                <Link to="/" className="btn btn-secondary">
+                  ← Back to Results
+                </Link>
               </div>
             </div>
           </aside>
