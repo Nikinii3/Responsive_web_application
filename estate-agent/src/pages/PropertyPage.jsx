@@ -37,9 +37,8 @@ export default function PropertyPage() {
 
   const safeDesc = property.description ? property.description.replace(/<[^>]+>/g, '') : '';
 
-  // Valid, open-source Google Maps iframe embed template literal syntax string
-  // Standard public Google Maps search query embed URL format
-  const mapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(property.location)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  // Google Maps iframe embed URL - works reliably for location search
+  const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(property.location)}&output=embed&z=15`;
 
   return (
     <div className="property-page">
