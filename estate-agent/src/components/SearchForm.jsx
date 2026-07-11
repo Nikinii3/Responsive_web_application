@@ -27,7 +27,7 @@ const MAX_PRICE_OPTIONS = [
 ];
 
 /**
- * SearchForm — uses React Widgets for dropdowns/numbers, and robust native inputs for dates.
+ * SearchForm — Simple search box with collapsible advanced filters.
  * @param {{ onSearch: Function }} props
  */
 export default function SearchForm({ onSearch }) {
@@ -39,6 +39,7 @@ export default function SearchForm({ onSearch }) {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [postcode, setPostcode] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
 
   const handleSearch = () => {
     onSearch({
@@ -66,123 +67,129 @@ export default function SearchForm({ onSearch }) {
   };
 
   return (
-    <div className="search-panel">
-      <div className="search-panel-row">
-        {/* Property Type */}
-        <div className="form-group">
-          <label className="form-label">Property Type</label>
-          <DropdownList
-            data={PROPERTY_TYPES}
-            value={type}
-            onChange={setType}
-            containerClassName="rw-widget"
-          />
-        </div>
-
-        {/* Price Range */}
-        <div className="form-group">
-          <label className="form-label">Price Range</label>
-          <div className="form-row">
-            <DropdownList
-              data={PRICE_OPTIONS}
-              value={minPrice}
-              onChange={setMinPrice}
-              dataKey="value"
-              textField="label"
-              placeholder="Min price"
-            />
-            <DropdownList
-              data={MAX_PRICE_OPTIONS}
-              value={maxPrice}
-              onChange={setMaxPrice}
-              dataKey="value"
-              textField="label"
-              placeholder="Max price"
-            />
-          </div>
-        </div>
-
-        {/* Bedrooms */}
-        <div className="form-group">
-          <label className="form-label">Bedrooms</label>
-          <div className="form-row">
-            <NumberPicker
-              min={0} max={10}
-              value={minBedrooms}
-              onChange={setMinBedrooms}
-              placeholder="Min beds"
-            />
-            <NumberPicker
-              min={0} max={10}
-              value={maxBedrooms}
-              onChange={setMaxBedrooms}
-              placeholder="Max beds"
-            />
-          </div>
-        </div>
-
-        {/* Date Added (From) */}
-        <div className="form-group">
-          <label className="form-label">Date Added (from)</label>
-          <input
-            type="date"
-            className="rw-input"
-            value={dateFrom}
-            max={dateTo || undefined}
-            onChange={(e) => setDateFrom(e.target.value)}
-            style={{
-              width: '100%', padding: '6px 12px', border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-sm)', fontFamily: 'var(--font-body)',
-              fontSize: '0.95rem', height: '38px', backgroundColor: '#fff'
-            }}
-          />
-        </div>
-
-        {/* Date Added (To) */}
-        <div className="form-group">
-          <label className="form-label">Date Added (to)</label>
-          <input
-            type="date"
-            className="rw-input"
-            value={dateTo}
-            min={dateFrom || undefined}
-            onChange={(e) => setDateTo(e.target.value)}
-            style={{
-              width: '100%', padding: '6px 12px', border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-sm)', fontFamily: 'var(--font-body)',
-              fontSize: '0.95rem', height: '38px', backgroundColor: '#fff'
-            }}
-          />
-        </div>
-      </div>
-
-      <div className="search-panel-row">
-        {/* Postcode */}
-        <div className="form-group">
-          <label className="form-label">Postcode Area / Location</label>
+    <div className="search-form-wrapper">
+      {/* Simple Search Box */}
+      <div className="search-form-header">
+        <h2>Search Properties</h2>
+        <div className="search-form-simple">
           <input
             type="text"
-            className="rw-input"
+            className="search-input-main"
             value={postcode}
             onChange={(e) => setPostcode(e.target.value.toUpperCase())}
-            placeholder="e.g. COLOMBO, KANDY, 00300"
-            style={{
-              width: '100%', padding: '8px 12px', border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-sm)', fontFamily: 'var(--font-body)',
-              fontSize: '0.95rem',
-            }}
+            placeholder="🔍︎ Location, price, bedrooms, type..."
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           />
         </div>
-
-        <div className="search-btn-row">
-          <button className="btn btn-primary" onClick={handleSearch}>
-            Search
-          </button>
-          <button className="btn btn-outline" onClick={handleReset}>
-            Reset
-          </button>
-        </div>
+        
+        {/* Toggle Advanced Filters */}
+        <button 
+          className="btn btn-filters"
+          onClick={() => setShowFilters(!showFilters)}
+        >
+          {showFilters ? ' ⬆ Hide Advanced Filters' : ' ⬇ Show Advanced Filters'}
+        </button>
       </div>
+
+      {/* Advanced Filters Section (Collapsible) */}
+      {showFilters && (
+        <div className="search-form-advanced">
+          <div className="filters-grid">
+            {/* Property Type */}
+            <div className="form-group">
+              <label className="form-label">Property Type</label>
+              <DropdownList
+                data={PROPERTY_TYPES}
+                value={type}
+                onChange={setType}
+                containerClassName="rw-widget"
+              />
+            </div>
+
+            {/* Min Price */}
+            <div className="form-group">
+              <label className="form-label">Min Price</label>
+              <DropdownList
+                data={PRICE_OPTIONS}
+                value={minPrice}
+                onChange={setMinPrice}
+                dataKey="value"
+                textField="label"
+                placeholder="No minimum"
+              />
+            </div>
+
+            {/* Max Price */}
+            <div className="form-group">
+              <label className="form-label">Max Price</label>
+              <DropdownList
+                data={MAX_PRICE_OPTIONS}
+                value={maxPrice}
+                onChange={setMaxPrice}
+                dataKey="value"
+                textField="label"
+                placeholder="No maximum"
+              />
+            </div>
+
+            {/* Min Bedrooms */}
+            <div className="form-group">
+              <label className="form-label">Min Bedrooms</label>
+              <NumberPicker
+                min={0} max={10}
+                value={minBedrooms}
+                onChange={setMinBedrooms}
+                placeholder="Any"
+              />
+            </div>
+
+            {/* Max Bedrooms */}
+            <div className="form-group">
+              <label className="form-label">Max Bedrooms</label>
+              <NumberPicker
+                min={0} max={10}
+                value={maxBedrooms}
+                onChange={setMaxBedrooms}
+                placeholder="Any"
+              />
+            </div>
+
+            {/* Date From */}
+            <div className="form-group">
+              <label className="form-label">Added From</label>
+              <input
+                type="date"
+                className="rw-input"
+                value={dateFrom}
+                max={dateTo || undefined}
+                onChange={(e) => setDateFrom(e.target.value)}
+              />
+            </div>
+
+            {/* Date To */}
+            <div className="form-group">
+              <label className="form-label">Added To</label>
+              <input
+                type="date"
+                className="rw-input"
+                value={dateTo}
+                min={dateFrom || undefined}
+                onChange={(e) => setDateTo(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="search-form-actions">
+            <button className="btn btn-primary" onClick={handleSearch}>
+               🔍︎ Search
+            </button>
+            <button className="btn btn-outline" onClick={handleReset}>
+               ↻ Reset
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
