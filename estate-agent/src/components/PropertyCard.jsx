@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 import { useFavourites } from '../context/FavouritesContext.jsx';
 import { formatPrice } from '../utils/searchUtils.js';
@@ -11,6 +11,7 @@ export const DRAG_TYPE = 'PROPERTY';
  * @param {{ property: object }} props
  */
 export default function PropertyCard({ property }) {
+  const navigate = useNavigate();
   const { addFavourite, isFavourite } = useFavourites();
   const fav = isFavourite(property.id);
 
@@ -23,11 +24,22 @@ export default function PropertyCard({ property }) {
   // Sanitise description for display (strip potential HTML)
   const safeDesc = property.description.replace(/<[^>]+>/g, '');
 
+  // Handle card click to navigate to property page
+  const handleCardClick = (e) => {
+    // Don't navigate if clicking on the favorite button
+    if (e.target.closest('.property-card-fav-btn')) {
+      return;
+    }
+    navigate(`/property/${property.id}`);
+  };
+
   return (
     <div
       ref={drag}
       className={`property-card${isDragging ? ' dragging' : ''}`}
-      title="Drag to favourites"
+      title="Click to view property details"
+      onClick={handleCardClick}
+      style={{ cursor: 'pointer' }}
     >
       <div className="property-card-image">
         <img src={property.picture} alt={`${property.type} in ${property.location}`} loading="lazy" />
@@ -55,9 +67,9 @@ export default function PropertyCard({ property }) {
           <span className="property-card-added">
             Added {property.added.day} {property.added.month} {property.added.year}
           </span>
-          <Link to={`/property/${property.id}`} className="btn btn-primary btn-sm">
+          <button className="btn btn-primary btn-sm" onClick={handleCardClick}>
             View →
-          </Link>
+          </button>
         </div>
       </div>
     </div>
