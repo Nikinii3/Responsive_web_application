@@ -38,7 +38,8 @@ export default function PropertyPage() {
   const safeDesc = property.description ? property.description.replace(/<[^>]+>/g, '') : '';
 
   // Valid, open-source Google Maps iframe embed template literal syntax string
-  const mapUrl = `https://maps.google.com/maps?q=${property.lat},${property.lng}&z=15&output=embed`;
+  // Standard public Google Maps search query embed URL format
+  const mapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(property.location)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
   return (
     <div className="property-page">
@@ -48,19 +49,19 @@ export default function PropertyPage() {
         <div className="property-page-layout">
           {/* Left panel: Media galleries and responsive layout tabs */}
           <div>
-            <div className="gallery-section">
-              {galleryItems.length > 0 ? (
-                <ImageGallery
-                  items={galleryItems}
-                  showPlayButton={false}
-                  showFullscreenButton={true}
-                  thumbnailPosition="bottom"
-                  lazyLoad={true}
-                />
-              ) : (
-                <div className="empty-state">No images available</div>
-              )}
-            </div>
+            <div className="gallery-section" style={{ maxWidth: '650px', margin: '0 auto', borderRadius: '8px', overflow: 'hidden' }}>
+            {galleryItems.length > 0 ? (
+              <ImageGallery
+                items={galleryItems}
+                showPlayButton={false}
+                showFullscreenButton={true}
+                thumbnailPosition="bottom"
+                lazyLoad={true}
+              />
+            ) : (
+              <div className="empty-state">No images available</div>
+            )}
+          </div>
 
             <div className="property-tabs-section" style={{ marginTop: '30px' }}>
               <Tabs>
