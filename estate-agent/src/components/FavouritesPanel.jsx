@@ -2,7 +2,7 @@ import React from 'react';
 import { useDrop, useDrag } from 'react-dnd';
 import { useFavourites } from '../context/FavouritesContext.jsx';
 import { DRAG_TYPE } from './PropertyCard.jsx';
-import { formatPrice } from '../utils/searchUtils.js';
+import { formatPrice, getImageUrl } from '../utils/searchUtils.js';
 
 /**
  * A single draggable item in the favourites list.
@@ -16,7 +16,7 @@ function FavItem({ property, onRemove }) {
 
   return (
     <div ref={drag} className="fav-item" style={{ opacity: isDragging ? 0.4 : 1 }}>
-      <img src={property.picture} alt={property.type} />
+      <img src={getImageUrl(property.picture)} alt={property.type} />
       <div className="fav-item-info">
         <div className="fav-item-name">{property.location.split(',')[0]}</div>
         <div className="fav-item-price">{formatPrice(property.price)}</div>

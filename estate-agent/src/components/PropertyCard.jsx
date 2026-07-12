@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 import { useFavourites } from '../context/FavouritesContext.jsx';
-import { formatPrice } from '../utils/searchUtils.js';
+import { formatPrice, getImageUrl } from '../utils/searchUtils.js';
 
 export const DRAG_TYPE = 'PROPERTY';
 
@@ -42,7 +42,7 @@ export default function PropertyCard({ property }) {
       style={{ cursor: 'pointer' }}
     >
       <div className="property-card-image">
-        <img src={property.picture} alt={`${property.type} in ${property.location}`} loading="lazy" />
+        <img src={getImageUrl(property.picture)} alt={`${property.type} in ${property.location}`} loading="lazy" />
         <span className="property-card-badge">{property.type}</span>
         {/* Favourite heart button */}
         <button

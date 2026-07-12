@@ -101,3 +101,14 @@ export function formatPrice(price) {
     maximumFractionDigits: 0,
   }).format(price);
 }
+
+/**
+ * Get correct image URL considering Vite base path
+ */
+export function getImageUrl(path) {
+  if (!path) return '';
+  const base = import.meta.env.BASE_URL || '/';
+  // If base ends with / and path starts with /, avoid double slash
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${base}${cleanPath}`;
+}

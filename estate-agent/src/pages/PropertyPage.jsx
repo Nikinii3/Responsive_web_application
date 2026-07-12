@@ -5,7 +5,7 @@ import 'react-tabs/style/react-tabs.css';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/build/image-gallery.css";
 import { useFavourites } from '../context/FavouritesContext.jsx';
-import { formatPrice } from '../utils/searchUtils.js';
+import { formatPrice, getImageUrl } from '../utils/searchUtils.js';
 import propertiesData from '../data/properties.json';
 
 /**
@@ -29,8 +29,8 @@ export default function PropertyPage() {
 
   // Build image-gallery array cleanly
   const galleryItems = property.images ? property.images.map((src) => ({
-    original: src,
-    thumbnail: src,
+    original: getImageUrl(src),
+    thumbnail: getImageUrl(src),
     originalAlt: `${property.type} in ${property.location}`,
     thumbnailAlt: `Thumbnail`,
   })) : [];
@@ -110,7 +110,7 @@ export default function PropertyPage() {
                   <div className="tab-floorplan">
                     {property.floorplan ? (
                       <img
-                        src={property.floorplan}
+                        src={getImageUrl(property.floorplan)}
                         alt="Floor plan"
                       />
                     ) : (
