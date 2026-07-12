@@ -67,7 +67,7 @@ export default function SearchForm({ onSearch }) {
   };
 
   return (
-    <div className="search-form-wrapper">
+    <div className="search-form-wrapper" id="search-form">
       {/* Simple Search Box */}
       <div className="search-form-header">
         <h2>Search Properties</h2>

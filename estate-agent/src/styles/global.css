@@ -53,11 +53,29 @@
 }
 .logo-icon { color: var(--color-accent); font-size: 1.8rem; }
 .header-tagline { font-size: 0.75rem; color: rgba(255,255,255,0.65); margin-top: 1px; }
+.header-nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
 .header-nav a {
-  color: rgba(255,255,255,0.85); margin-left: 20px;
-  font-size: 0.9rem; font-weight: 500; transition: color 0.2s;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 .header-nav a:hover { color: var(--color-accent); }
+.header-nav-link {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.header-nav-link:hover { color: var(--color-accent); }
 
 /* ---- Footer ---- */
 .footer {

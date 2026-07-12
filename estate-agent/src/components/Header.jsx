@@ -16,7 +16,8 @@ export default function Header() {
           </div>
         </Link>
         <nav className="header-nav">
-          <a href="#favourites">Favourites</a>
+          <a href="#search-form" className="header-nav-link"> Search</a>
+          <a href="#favourites" className="header-nav-link"> Favourites</a>
         </nav>
       </div>
     </header>
